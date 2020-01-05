@@ -9,16 +9,34 @@
   },
   "dependencies": {
     "core-js": "^3.4.4",
-    "vue": "^2.6.10"
+    "d3": "^3.5.12",
+    "d3-plugins-sankey": "^1.2.1",
+    "d3-sankey": "^0.12.3",
+    "d3.chart": "^0.3.0",
+    "d3.chart.sankey": "^0.4.0",
+    "d3latest": "npm:d3@^5.15.0",
+    "echarts": "^4.6.0",
+    "vue": "^2.6.10",
+    "vue-class-component": "^7.0.2",
+    "vue-echarts": "^4.1.0",
+    "vue-property-decorator": "^8.3.0",
+    "vuetify": "^2.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
+    "@vue/cli-plugin-typescript": "^4.1.2",
     "@vue/cli-service": "^4.1.0",
+    "@vue/eslint-config-typescript": "^4.0.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "sass": "^1.19.0",
+    "sass-loader": "^8.0.0",
+    "typescript": "~3.5.3",
+    "vue-cli-plugin-vuetify": "^2.0.3",
+    "vue-template-compiler": "^2.6.10",
+    "vuetify-loader": "^1.3.0"
   },
   "eslintConfig": {
     "root": true,
@@ -27,11 +45,12 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "eslint:recommended"
+      "eslint:recommended",
+      "@vue/typescript"
     ],
     "rules": {},
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@typescript-eslint/parser"
     }
   },
   "browserslist": [

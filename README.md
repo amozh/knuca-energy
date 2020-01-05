@@ -1,3 +1,8 @@
+# Install
+```
+npm install -g @vue/cli
+```
+
 # knuca-energy
 
 ## Project setup
