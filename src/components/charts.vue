@@ -1,43 +1,33 @@
 <template>
-    <div class="cards-container">
-        <v-card class="echart" elevation="12" key="Баланс споживання енергії" style="height: 800px; width: 1000px">
-            <sankey-chart></sankey-chart>
-        </v-card>
-        <v-card class="echart funnel" elevation="12" key="Баланс споживання енергії" style="min-width: 500px; max-width: 800px;">
-            <funnel-chart></funnel-chart>
+    <div class="cards-container" v-if="item">
+        <v-card class="echart funnel" elevation="12" key="Баланс споживання енергії" style="width: 800px;">
+            <div class="card-title-container"><span>Існуючий баланс споживання енергії</span></div>
+            <funnel-chart v-bind:data="item" v-bind:labels="labels"></funnel-chart>
         </v-card>
         <v-card class="echart" elevation="8" style="width: 800px;">
-            <pie-3d-chart title="Електроенергія"></pie-3d-chart>
+            <div class="card-title-container"><span>Оптимізація джерел енергії. Електроенергія</span></div>
+            <pie-3d-chart kind="electric" v-bind:data="item" v-bind:labels="labels"></pie-3d-chart>
         </v-card>
         <v-card class="echart" elevation="8" style="width: 800px;">
-            <pie-3d-chart title="Нафтопродукти"></pie-3d-chart>
+            <div class="card-title-container"><span>Оптимізація джерел енергії. Нафтопродукти</span></div>
+            <pie-3d-chart kind="oil" v-bind:data="item" v-bind:labels="labels"></pie-3d-chart>
         </v-card>
         <v-card class="echart" elevation="8" style="width: 800px;">
-            <pie-3d-chart title="Вугілля"></pie-3d-chart>
+            <div class="card-title-container"><span>Оптимізація джерел енергії. Вугілля</span></div>
+            <pie-3d-chart kind="coal" v-bind:data="item" v-bind:labels="labels"></pie-3d-chart>
         </v-card>
         <v-card class="echart" elevation="8" style="width: 800px;">
-            <pie-3d-chart title="Природний газ"></pie-3d-chart>
+            <div class="card-title-container"><span>Оптимізація джерел енергії. Природний газ</span></div>
+            <pie-3d-chart kind="gas" v-bind:data="item" v-bind:labels="labels"></pie-3d-chart>
         </v-card>
         <v-card class="echart" elevation="8" style="width: 800px;">
-            <pie-3d-chart title="Дрова"></pie-3d-chart>
+            <div class="card-title-container"><span>Оптимізація джерел енергії. Дрова</span></div>
+            <pie-3d-chart kind="wood" v-bind:data="item" v-bind:labels="labels"></pie-3d-chart>
         </v-card>
-<!--        <v-card class="echart" elevation="8" key="Природний газ" style="width: 800px;">-->
-<!--            <pie-3d-reg-chart></pie-3d-reg-chart>-->
-<!--        </v-card>-->
-<!--        <v-card class="echart" elevation="8" key="Природний газ 3" style="width: 800px;">-->
-<!--            <column-3d-chart></column-3d-chart>-->
-<!--        </v-card>-->
-<!--        <v-card class="echart" elevation="8" key="Природний газ 2" style="width: 800px;">-->
-<!--            <pie-radius-chart></pie-radius-chart>-->
-<!--        </v-card>-->
-<!--        -->
-<!--        <v-card class="echart" elevation="8" v-bind:key="`${title}${index}`" v-for="(chart, index) in charts">-->
-<!--            <div>-->
-<!--                <pie-chart v-bind:data="chart.data" v-bind:title="chart.title" v-bind:animation="animation"/>-->
-<!--            </div>-->
-<!--        </v-card>-->
-<!--        <d3chart v-bind:tweetData="loadData"/>-->
-<!--        <interactiveD3Chart v-bind:chartData="interactiveSankeyData"/>-->
+        <v-card class="echart" elevation="12" style="width: 100%; padding: 10px; max-width: 1200px;">
+            <div class="card-title-container"><span>Оптимізація джерел енергії</span></div>
+            <sankey-chart v-bind:data="item" v-bind:labels="labels"></sankey-chart>
+        </v-card>
     </div>
 </template>
 
@@ -55,28 +45,26 @@
         align-items: center;
         flex-wrap: wrap;
     }
+
+    .card-title-container {
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+    }
+
     .echart {
         margin: 20px;
-    }
-    .funnel {
-        width: 840px;
-        height: 400px;
     }
 </style>
 
 <script>
   import Vue from 'vue';
-  import d3Chart from './d3chart.vue'
-  import interactiveD3Chart from './interactived3chart.vue'
-  import pieChart from './pie-chart.vue'
   import pie3DChart from './pie-3d-amcharts-chart'
-  import pie3DRegChart from './pie-3d-reg-amcharts-chart'
-  import column3DChart from './column-3d-amcharts-chart'
-  import pieRadiusChart from './pie-radius-amcharts-chart'
   import sankeyChart from './sankey-amcharts-chart'
   import funnelChart from './funnel-amcharts-chart'
   import { ChartSankeyData } from "@/components/chartSankeyData.ts";
-
+  import { EnergyData, EnergyDataItem, loadEnergyData } from './energyData'
+  
   // const data = (() => {
   //   const links = d3latest.csvParse(SankeyData, d3latest.autoType);
   //   const nodes = Array.from(new Set(links.flatMap(l => [l.source, l.target])), name => ({name}));
@@ -88,39 +76,8 @@
     components: {
       'funnel-chart': funnelChart,
       'pie-3d-chart': pie3DChart,
-      'sankey-chart': sankeyChart,
-      // 'pie-chart': pieChart,
-      // 'pie-3d-reg-chart': pie3DRegChart,
-      // 'pie-radius-chart': pieRadiusChart,
-      // 'column-3d-chart': column3DChart
-      // 'd3chart': d3Chart,
-      // 'interactiveD3Chart': interactiveD3Chart
+      'sankey-chart': sankeyChart
     },
-    props: ['charts', 'title'],
-    data () {
-      return {
-        animation: {
-          pieChartsDataIndex: 0,
-          pieChartsDataPrevIndex: 0
-        },
-        loadData: [],
-        interactiveSankeyData: ChartSankeyData
-      }
-    },
-    mounted() {
-      this.runDataIndexInterval()
-    },
-    methods: {
-      runDataIndexInterval() {
-        const animation = this.animation;
-        const that = this;
-        setInterval(() => {
-          if (that.charts) {
-            animation.pieChartsDataPrevIndex = animation.pieChartsDataIndex;
-            animation.pieChartsDataIndex = (animation.pieChartsDataIndex + 1) % that.charts[0].data.length;
-          }
-        }, 5000);
-      }
-    }
+    props: ['item', 'labels'],
   })
 </script>
